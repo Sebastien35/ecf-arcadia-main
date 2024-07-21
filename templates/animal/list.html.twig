@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Animaux{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Liste des Animaux</h1>
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <ul class="list-unstyled">
+                {% for animal in animals %}
+                    <li>{{ animal.name }} - {{ animal.race }} ({{ animal.habitat.name }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="row">
+            {% for animal in animals %}
+                <div class="col-md-4 mb-4">
+                    <div class="card text-center cadre">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ animal.name }}</h5>
+                            {% for image in animal.image %}
+                                <img class="img-fluid rounded-3 mb-3" src="{{ asset('uploads/images/' ~ image) }}" alt="{{ animal.name }}">
+                            {% endfor %}
+                            <a href="{{ path('app_animal_show', {'id': animal.id}) }}" class="btn btn-primary">Voir détails</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

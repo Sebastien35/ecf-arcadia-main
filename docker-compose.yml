@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "9000:80"
+    environment:
+      # APP_ENV: dev
+      # MONGODB_URI: mongodb://mongo:27017/symfony
+      DATABASE_URL: mysql://root:toto@mysql:3306/arcadia_db
+      # MAILER_DSN: mailjet+api://06ffe4a76df69ee729705458a67250c2:54c397094fd53dbcd9fe0900e99f5a21@api.mailjet:com
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mongo
+      - mysql
+
+  mongo:
+    image: mongo:8.0-rc-jammy
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: toto
+      MONGO_INITDB_ROOT_PASSWORD: toto
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "8082:3306"
+    volumes:
+      # - ./docs/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+      # - ./docs/02_insert.sql:/docker-entrypoint-initdb.d/02_insert.sql
+      - ./mysql-dump/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./mysql-dump:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: toto
+      MYSQL_DATABASE: arcadia_db
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: toto
+    depends_on:
+      - mysql
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8083:80"
+    volumes:
+      - ./:/var/www/app
+      - ./build/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+
+volumes:
+  mongo_data:
+  mysql_data:

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center">Liste des Utilisateurs</h1>
+    <div class="container mt-5 p-4 rounded-4 cadre">
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <a onclick="window.location.replace('/admin/user/new')" class="btn btn-primary">Créer un nouvel Utilisateur</a>
+            </div>
+        </div>
+        {% for user in users %}
+            <div class="card mb-3 m-4 rounded-4 avis">
+                <div class="row g-0">
+                    <div class="col-md-12 d-flex justify-content-center align-items-center">
+                        <div class="card-body text-center">
+                            <p>Email: {{ user.email }}</p>
+                            <p>Rôles: {{ user.roles|join(', ') }}</p>
+                            {% if "ROLE_ADMIN" not in user.roles %}
+                                <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');" style="display:inline-block;">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                    <button class="btn btn-danger m-2">Supprimer</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

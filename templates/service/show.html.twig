@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Afficher Service</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ service.id }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ service.name }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ service.description }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>
+                {% if service.image is not empty %}
+                    {% for image in service.image %}
+                        <img src="{{ asset('uploads/images/' ~ image) }}" alt="{{ service.name }}" width="100">
+                    {% endfor %}
+                {% else %}
+                    Pas d'image
+                {% endif %}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_service_index') }}">Retour à la liste</a>
+    <a href="{{ path('app_service_edit', {'id': service.id}) }}">Éditer</a>
+    {{ include('service/_delete_form.html.twig') }}
+{% endblock %}

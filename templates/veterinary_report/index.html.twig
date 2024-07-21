@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Rapports Vétérinaires{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Liste des Rapports Vétérinaires</h1>
+    <div class="container mt-5 p-4 mb-4 cadre">
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <a onclick="window.location.replace('/veto/veterinary_report/new')" class="btn btn-primary">Créer un nouveau rapport</a>
+            </div>
+        </div>
+        <div class="row">
+            {% for report in veterinary_reports %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center avis">
+                        <div class="card-body">
+                            <h5 class="card-title">Rapport {{ report.animalId.name }}</h5>
+                            <p class="card-text"><strong>Date:</strong> {{ report.reportDate|date('Y-m-d H:i') }}</p>
+                            <p class="card-text"><strong>État de santé:</strong> {{ report.healthStatus }}</p>
+                            <p class="card-text"><strong>Utilisateur:</strong> {{ report.userId.email }}</p>
+                            <a href="{{ path('app_veterinary_report_show', {'id': report.id}) }}" class="btn btn-primary mb-2">Voir</a>
+                            <a href="{{ path('app_veterinary_report_edit', {'id': report.id}) }}" class="btn btn-warning mb-2">Modifier</a>
+                            <form method="post" action="{{ path('app_veterinary_report_delete', {'id': report.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce rapport ?');" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ report.id) }}">
+                                <button type="submit" class="btn btn-danger mb-2">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        Aucun rapport trouvé
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

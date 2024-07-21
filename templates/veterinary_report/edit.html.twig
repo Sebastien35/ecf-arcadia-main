@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le Rapport Vétérinaire{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Modifier le Rapport Vétérinaire</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.report_date) }}
+                            {{ form_widget(form.report_date, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.health_status) }}
+                            {{ form_widget(form.health_status, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.detail) }}
+                            {{ form_widget(form.detail, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.animal_id) }}
+                            {{ form_widget(form.animal_id, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.user_id) }}
+                            {{ form_widget(form.user_id, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <button class="btn btn-primary mt-3">Enregistrer</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-8 text-center">
+                <a href="{{ path('app_veterinary_report_index') }}" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

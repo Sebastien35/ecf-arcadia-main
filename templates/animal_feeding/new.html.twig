@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un Nourrissage d'Animal{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Créer un Nourrissage d'Animal</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.feeding_date) }}
+                            {{ form_widget(form.feeding_date, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.food) }}
+                            {{ form_widget(form.food, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.quantity) }}
+                            {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.animal_id) }}
+                            {{ form_widget(form.animal_id, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.user_id) }}
+                            {{ form_widget(form.user_id, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                        <button class="btn btn-primary mt-3">Enregistrer</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-8 text-center">
+                <a href="{{ path('app_animal_feeding_index') }}" class="btn btn-secondary">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

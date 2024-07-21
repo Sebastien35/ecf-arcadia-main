@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center">Horaires</h1>
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <a href="{{ path('app_schedule_new') }}" class="btn btn-primary">Créer de nouveaux horaires</a>
+            </div>
+        </div>
+        <div class="row p-4 rounded-4 cadre">
+            {% for schedule in schedules %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body avis">
+                            <h5 class="card-title">{{ schedule.day }}</h5>
+                            <p class="card-text"><strong>Heure d'ouverture:</strong> {{ schedule.openingTime|date('H:i') }}</p>
+                            <p class="card-text"><strong>Heure de fermeture:</strong> {{ schedule.closingTime|date('H:i') }}</p>
+                            <a href="{{ path('app_schedule_edit', {'id': schedule.id}) }}" class="btn btn-warning mb-2">Modifier</a>
+                            <form method="post" action="{{ path('app_schedule_delete', {'id': schedule.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet horaire ?');" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ schedule.id) }}">
+                                <button class="btn btn-danger mb-2">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        Aucun enregistrement trouvé
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

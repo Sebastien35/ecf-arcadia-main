@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Nourrissages d'Animaux{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Liste des Nourrissages d'Animaux</h1>
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <a href="{{ path('app_animal_feeding_new') }}" class="btn btn-primary">Créer un nouveau nourrissage</a>
+            </div>
+        </div>
+        <div class="row">
+            {% for feeding in animal_feedings %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+                            <h5 class="card-title">Nourrissage {{ feeding.animalId.name }}</h5>
+                            <p class="card-text"><strong>Heure:</strong> {{ feeding.feedingDate|date('Y-m-d H:i') }}</p>
+                            <p class="card-text"><strong>Nourriture:</strong> {{ feeding.food }}</p>
+                            <p class="card-text"><strong>Quantité:</strong> {{ feeding.quantity }}</p>
+                            <p class="card-text"><strong>Utilisateur:</strong> {{ feeding.userId.email }}</p>
+                            <a href="{{ path('app_animal_feeding_show', {'id': feeding.id}) }}" class="btn btn-primary mb-2">Voir</a>
+                            <a href="{{ path('app_animal_feeding_edit', {'id': feeding.id}) }}" class="btn btn-warning mb-2">Modifier</a>
+                            <form method="post" action="{{ path('app_animal_feeding_delete', {'id': feeding.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce nourrissage ?');" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ feeding.id) }}">
+                                <button type="submit" class="btn btn-danger mb-2">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        Aucun enregistrement trouvé
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a class="text-center" href="{{ path('app_animal_list') }}">
+        <h1>Venez visiter tout nos animaux</h1>
+    </a>
+    <div id="habitat-detail" class="row">
+        <!-- Les détails de l'habitat seront affichés ici -->
+    </div>
+    <div id="animals-list" class="row">
+        <!-- Les animaux seront affichés ici -->
+    </div>
+    {% for habitat in habitats %}
+        <div class="card mb-3 m-4">
+            <div class="row g-0 rounded-4 cadre">
+                <div class="col-md-4 d-flex justify-content-center align-items-center">
+                    <a href="#" class="habitat-link" data-habitat-id="{{ habitat.id }}"> <h3>{{ habitat.name }}</h3></a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        {% for image in habitat.image %}
+                            <img class="img-fluid rounded-3" src="{{ asset('uploads/images/' ~ image) }}" alt="{{ habitat.name }}">
+                        {% endfor %}
+                    </div>
+                    <div class="card-footer rounded-2 avis">
+                        <p>{{ habitat.comment }}</p>
+                    </div>
+                </div>
+            </div>
+            {% if formViews is defined and formViews[habitat.id] is defined %}
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h3>Ajouter un commentaire</h3>
+                        {{ form_start(formViews[habitat.id]) }}
+                        {{ form_row(formViews[habitat.id].comment) }}
+                        <button type="submit" class="btn btn-primary">Envoyer</button>
+                        {{ form_end(formViews[habitat.id]) }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock body %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/filtre_animaux.js') }}?v={{ "now"|date("U") }}"></script>
+{% endblock %}
+
+
+
+
+

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center">Services</h1>
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <a href="{{ path('app_service_new') }}" class="btn btn-primary">Créer un nouveau Service</a>
+            </div>
+        </div>
+        <div class="row p-4 rounded-4 cadre">
+            {% for services in service %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center rounded-4 avis">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ services.name }}</h5>
+                            <p class="card-text">{{ services.description }}</p>
+                            <div class="mb-3">
+                                {% for image in services.image %}
+                                    <img class="img-fluid rounded-3 mb-3" src="{{ asset('uploads/images/' ~ image) }}" alt="{{ services.name }}">
+                                {% endfor %}
+                            </div>
+                            <a href="{{ path('app_service_edit', {'id': services.id}) }}" class="btn btn-warning mb-2">Éditer</a>
+                            <form method="post" action="{{ path('app_service_delete', {'id': services.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce service ?');" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ services.id) }}">
+                                <button class="btn btn-danger mb-2">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        Aucun enregistrement trouvé
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

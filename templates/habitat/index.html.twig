@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="text-center">Liste des Habitats</h1>
+    <div class="container mt-5">
+        <div class="row mb-3">
+            <div class="col-md-12 text-center">
+                <a href="{{ path('app_habitat_new') }}" class="btn btn-primary">Créer un nouvel habitat</a>
+            </div>
+        </div>
+        <div class="row">
+            {% for habitat in habitats %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 text-center cadre">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ habitat.name }}</h5>
+                            <p class="card-text">{{ habitat.description }}</p>
+                            <div class="mb-3">
+                                {% if habitat.image is not empty %}
+                                    {% for image in habitat.image %}
+                                        <img class="img-fluid rounded-3 mb-3" src="{{ asset('uploads/images/' ~ image) }}" alt="{{ habitat.name }}">
+                                    {% endfor %}
+                                {% else %}
+                                    <p>Pas d'image</p>
+                                {% endif %}
+                            </div>
+                            <a href="{{ path('app_habitat_show', {'id': habitat.id}) }}" class="btn btn-primary mb-2">Afficher</a>
+                            <a href="{{ path('app_habitat_edit', {'id': habitat.id}) }}" class="btn btn-warning mb-2">Éditer</a>
+                            <form method="post" action="{{ path('app_habitat_delete', {'id': habitat.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet habitat ?');" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ habitat.id) }}">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        Aucun enregistrement trouvé
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

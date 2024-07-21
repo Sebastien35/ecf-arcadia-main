@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Laisser un avis{% endblock %}
+
+{% block body %}
+    <h1>Laisser un avis</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.pseudo) }}
+    {{ form_row(form.comment) }}
+    <button type="submit" class="btn btn-primary">Soumettre</button>
+    {{ form_end(form) }}
+{% endblock %}

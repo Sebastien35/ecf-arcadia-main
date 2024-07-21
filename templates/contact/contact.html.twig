@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contactez-nous{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}" />
+{% endblock %}
+
+{% block body %}
+    <div class="card container text-center form-control">
+        <h1>Contactez-nous</h1>
+        {{ form_start(form) }}
+        <div class="card-header">
+            {{ form_row(form.title) }}
+        </div>
+        <div class="card-body text-center">
+            {{ form_row(form.description) }}
+            {{ form_row(form.email) }}
+        </div>
+        <button class="btn btn-primary" type="submit">Envoyer</button>
+        {{ form_end(form) }}
+    </div>
+    <div class="card container">
+        <div class="card-body">
+            <div id="map"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/localisation.js') }}?${{ "now"|date("U") }}"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+{% endblock %}

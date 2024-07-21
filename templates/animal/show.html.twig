@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h1 class="card-title"><strong>{{ animal.name }}</strong></h1>
+                        <h2 class="card-text">Espèce: {{ animal.race }}</h2>
+                        <p>({{ animal.habitat.name }})</p>
+                        <div>
+                            <h3>Images</h3>
+                            {% for image in animal.image %}
+                                <img src="{{ asset('uploads/images/' ~ image) }}" alt="{{ animal.name }}" class="img-fluid rounded-3 mb-2">
+                            {% endfor %}
+                        </div>
+                        <p class="card-text"><strong>Nombre de vues:</strong> {{ views }}</p>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">Rapports Vétérinaires</h2>
+                        {% if veterinaryReports is not empty %}
+                            <ul class="list-group">
+                                {% for report in veterinaryReports %}
+                                    <li class="list-group-item">
+                                        <p><strong>Date:</strong> {{ report.reportDate|date('d/m/Y') }}</p>
+                                        <p><strong>État de santé:</strong> {{ report.healthStatus }}</p>
+                                        <p><strong>Nourriture:</strong> {{ report.food }}</p>
+                                        <p><strong>Poids de la nourriture:</strong> {{ report.foodWeight }} kg</p>
+                                        <p><strong>Détails:</strong> {{ report.detail }}</p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Aucun rapport vétérinaire disponible pour cet animal.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">Alimentation</h2>
+                        {% if animalFeedings is not empty %}
+                            {% for feeding in animalFeedings %}
+                                <div class="mb-3">
+                                    <p><strong>Nom de l'aliment :</strong> {{ feeding.food }}</p>
+                                    <p><strong>Quantité :</strong> {{ feeding.quantity }}</p>
+                                    <p><strong>Date :</strong> {{ feeding.feedingDate|date('Y-m-d H:i:s') }}</p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>Aucune information sur l'alimentation disponible pour cet animal.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-secondary" onclick="history.back()">Revenir en arrière</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

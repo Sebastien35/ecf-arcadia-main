@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Nourrissage d'Animal{% endblock %}
+
+{% block body %}
+    <h1 class="text-center">Détails du Nourrissage d'Animal</h1>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ animal_feeding.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Heure</th>
+                                <td>{{ animal_feeding.feedingDate|date('Y-m-d H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nourriture</th>
+                                <td>{{ animal_feeding.food }}</td>
+                            </tr>
+                            <tr>
+                                <th>Quantité</th>
+                                <td>{{ animal_feeding.quantity }}</td>
+                            </tr>
+                            <tr>
+                                <th>Animal</th>
+                                <td>{{ animal_feeding.animalId.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <td>{{ animal_feeding.userId.email }}</td>
+                            </tr>
+                        </table>
+                        <div class="text-center">
+                            <a href="{{ path('app_animal_feeding_index') }}" class="btn btn-secondary">Retour à la liste</a>
+                            <a href="{{ path('app_animal_feeding_edit', {'id': animal_feeding.id}) }}" class="btn btn-warning">Modifier</a>
+                            <form method="post" action="{{ path('app_animal_feeding_delete', {'id': animal_feeding.id}) }}" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ animal_feeding.id) }}">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
