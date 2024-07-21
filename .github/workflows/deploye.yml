@@ -7,32 +7,28 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: jurasikarcadia
+    
+    env:
+      SSHPASS: ${{ secrets.SSHPASS }}
 
-    steps:
+    steps: 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      - name: Install SSH Client
-        run: sudo apt-get update && sudo apt-get install sshpass
-
-      - name: Copy to VPSS
-        env:
-          VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
-          VPS_HOST: ${{ secrets.VPS_HOST }}
-          APP_PATH: /home/rene/htdocs/reneleliard.online
-        run: sshpass -p "$VPS_PASSWORD" rsync -avz  --include='.*'  -e " ssh -o StrictHostKeyChecking=no " ./* $VPS_USER@$VPS_HOST:$APP_PATH
-
-      - name: Deploy using docker-compose
-        env:
-          VPS_USER: ${{ secrets.VPS_USER }}
-          VPS_PASSWORD: ${{ secrets.VPS_PASSWORD }}
-          VPS_HOST: ${{ secrets.VPS_HOST }}
+      - name: Install sshpass & update apt 
         run: |
-          sshpass -p $VPS_PASSWORD ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST "
-            cd htdocs/reneleliard.online/ && 
-            ls &&
-            docker compose down -v 
-            docker compose up -d --build
+          sudo apt update
+          sudo apt install sshpass
+        
+      - name: Deploy application
+        run: |
+          sshpass -e ssh -o strictHostKeyChecking=no  ${{ secrets.SSH_USER}}@${{ secrets.SSH_IP}} "
+          cd htdocs &&
+          cd arcadia-zoo.online/ &&
+          cd Arcadia &&
+          git pull https://github.com/Sebastien35/Arcadia.git &&
+          composer install
           "
+
+      
+#deploy test
