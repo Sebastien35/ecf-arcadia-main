@@ -24,9 +24,8 @@ jobs:
         run: |
           sshpass -e ssh -o strictHostKeyChecking=no  ${{ secrets.SSH_USER}}@${{ secrets.SSH_IP}} "
           cd htdocs &&
-          cd arcadia-zoo.online/ &&
-          cd Arcadia &&
-          git pull https://github.com/Sebastien35/Arcadia.git &&
+          cd reneleliard.online/ &&
+          git pull https://github.com/Sebastien35/ecf-arcadia-main.git &&
           composer install
           "
 
